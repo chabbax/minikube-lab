@@ -5,16 +5,16 @@ module "namespaces" {
 
   namespaces = [
     {
-      name        = "dev-namespace"
+      name        = "apps"
       labels      = { overide_lable = "test" }
       annotations = { owner = "example" }
     },
     {
-      name        = "stag-namespace"
+      name        = "monitoring"
       annotations = { owner = "example" }
     },
     {
-      name = "prod-namespace"
+      name = "ops"
     }
   ]
 }
