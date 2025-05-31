@@ -1,0 +1,48 @@
+# Terraform state and crash logs
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan
+crash.log
+
+# Local .terraform directories
+.terraform/
+.terraform.lock.hcl
+
+# Ignore pre-commit hooks cache
+.pre-commit-config.yaml.venv/
+.pre-commit/
+
+# Editor and system files
+.DS_Store
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Python cache if using pip/pre-commit
+__pycache__/
+*.pyc
+
+# IDE specific
+.vscode/
+.idea/
+*.code-workspace
+
+# Mac OS metadata files
+*.DS_Store
+
+# Archives and binaries downloaded during Makefile runs
+terraform
+terraform.zip
+terraform-docs
+terraform-docs.tar.gz
+
+# Logs and temp
+*.log
+*.tmp
+*.out
+
+# Exclude local env files
+.env
+.env.*
