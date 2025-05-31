@@ -1,6 +1,6 @@
 # Minikube Lab
 
-### Start Minikube
+#### Start Minikube
 
 Creates 1 control-plane and 1 worker node (minikube and minikube-m02)
 
@@ -8,7 +8,7 @@ Creates 1 control-plane and 1 worker node (minikube and minikube-m02)
 minikube start --nodes 2
 ```
 
-### Stop Minikube
+#### Stop Minikube
 
 Preserves cluster state and data (can be resumed later)
 
@@ -16,7 +16,7 @@ Preserves cluster state and data (can be resumed later)
 minikube stop
 ```
 
-### Delete Minikube
+#### Delete Minikube
 
 Destroys all Minikube VMs/containers and cluster data
 
