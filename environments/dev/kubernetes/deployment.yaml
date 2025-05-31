@@ -10,9 +10,9 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 50%
-      maxSurge: 50%
-  replicas: 2
+      maxUnavailable: 25%
+      maxSurge: 25%
+  replicas: 1
   selector:
     matchLabels:
       app: nginx-example
@@ -32,7 +32,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: nginx-example
-          image: nginx:1.25.3
+          image: nginx:latest
           ports:
             - containerPort: 80
           resources:
