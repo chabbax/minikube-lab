@@ -32,12 +32,6 @@ __pycache__/
 # Mac OS metadata files
 *.DS_Store
 
-# Archives and binaries downloaded during Makefile runs
-terraform
-terraform.zip
-terraform-docs
-terraform-docs.tar.gz
-
 # Logs and temp
 *.log
 *.tmp
