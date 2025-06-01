@@ -5,15 +5,16 @@ module "argocd" {
   source            = "../../terraform/modules/helm_release"
   name              = "argocd"
   namespace         = "argocd"
-  chart_path        = "${path.root}/../../helm/charts/argocd"
+  chart_path        = "${path.root}/../../terraform/helm/charts/argo-cd"
   create_namespace  = true
   atomic            = true
   wait              = true
   wait_for_jobs     = true
   dependency_update = true
   timeout           = "5m"
+  set               = []
 
   values = [
-    "${path.root}/helm/charts/argocd/values.yaml"
+    "${path.root}/helm-values/argocd-values.yaml"
   ]
 }
