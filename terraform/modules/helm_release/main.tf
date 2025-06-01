@@ -14,21 +14,26 @@
   @params values           - List of file paths to YAML values files that override chart defaults
   @params set              - List of individual "key=value" overrides for helm --set
 
-  @note: Installs from local path if provided for air gapped environments; otherwise uses remote chart and repository
+  @note   Installs from local path if provided for air gapped environments; otherwise uses remote chart and repository
+  @note   Installs from local path (air‐gapped) using chart_pat
+  @note   Install from a remote repository by leaving chart_path="" and set chart + repository + version.
 */
-resource "helm_release" "helm_release" {
-  name              = var.name
-  namespace         = var.namespace
-  chart             = length(trimspace(var.chart_path)) > 0 ? var.chart_path : var.chart
-  repository        = length(trimspace(var.chart_path)) == 0 ? var.repository : null
-  version           = (length(trimspace(var.chart_path)) == 0 && length(trimspace(var.version)) > 0) ? var.version : null
+resource "helm_release" "release" {
+  name      = var.name
+  namespace = var.namespace
+
+  chart      = length(trimspace(var.chart_path)) > 0 ? var.chart_path : var.chart
+  repository = length(trimspace(var.chart_path)) == 0 ? var.repository : null
+  version    = (length(trimspace(var.chart_path)) == 0 && length(trimspace(var.chart_version)) > 0) ? var.chart_version : null
+
   create_namespace  = var.create_namespace
   atomic            = var.atomic
   wait              = var.wait
   wait_for_jobs     = var.wait_for_jobs
   dependency_update = var.dependency_update
   timeout           = var.timeout
-  values            = var.values
+
+  values = var.values
 
   dynamic "set" {
     for_each = var.set
