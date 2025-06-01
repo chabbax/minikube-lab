@@ -24,7 +24,7 @@ module "nginx-example-deployment" {
 
   deployments = [
     {
-      manifest = "${path.module}/kubernetes/deployment.yaml"
+      manifest = "../../terraform/kubernetes/deployment.yaml"
     }
   ]
 }
@@ -34,7 +34,7 @@ module "nginx-example-services" {
 
   services = [
     {
-      manifest = "${path.module}/kubernetes/service.yaml"
+      manifest = "../../terraform/kubernetes/service.yaml"
     }
   ]
 }
