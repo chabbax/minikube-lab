@@ -42,3 +42,14 @@ git add terraform/helm/charts/argocd
 git add terraform/helm/charts/opencost
 git commit -m "chore: add local Helm charts (ArgoCD v5.31.0, OpenCost v0.6.0)"
 git push origin main
+
+# Log in with a token (Dashboard will prompt)
+
+kubectl -n kube-system create serviceaccount dashboard-admin-sa
+kubectl -n kube-system create clusterrolebinding dashboard-admin-crb \
+ --clusterrole=cluster-admin \
+ --serviceaccount=kube-system:dashboard-admin-sa
+
+kubectl -n kube-system get secret \
+ $(kubectl -n kube-system get sa dashboard-admin-sa -o jsonpath="{.secrets[0].name}") \
+ -o go-template="{{.data.token | base64decode}}"
