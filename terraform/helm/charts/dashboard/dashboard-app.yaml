@@ -7,16 +7,25 @@ metadata:
     app: kubernetes-dashboard
 spec:
   project: default
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Instead of `chart: …`, we tell Argo CD where, *in the Git repo*, to find
+  # the raw Helm chart directory. In our repo it lives at:
+  #   terraform/helm/charts/dashboard
+  # ──────────────────────────────────────────────────────────────────────────
   source:
     repoURL: https://github.com/chabbax/minikube-lab.git
-    chart: kubernetes-dashboard
-    targetRevision: "7.13.0"
+    targetRevision: main # or “main” (whatever branch you use)
+    path: terraform/helm/charts/dashboard
     helm:
       valueFiles:
         - environments/dev/helm-values/dashboard-values.yaml
+  # ──────────────────────────────────────────────────────────────────────────
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+
   syncPolicy:
     automated:
       prune: true

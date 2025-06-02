@@ -5,3 +5,5 @@ rbac:
   enabled: true
 ingress:
   enabled: false
+metrics:
+  enabled: true
