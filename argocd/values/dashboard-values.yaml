@@ -18,3 +18,5 @@ app:
       operator: "Equal"
       value: "nginx"
       effect: "NoSchedule"
+kong:
+  enabled: false
