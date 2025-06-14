@@ -1,10 +1,9 @@
 # Private chart in directory : argocd/charts/dashboard
-
+web:
+  automountServiceAccountToken: true
 service:
   type: NodePort
   nodePort: 30001
-rbac:
-  enabled: true
 ingress:
   enabled: false
 metrics:
