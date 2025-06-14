@@ -11,7 +11,7 @@ spec:
     path: argocd/charts/dashboard
     helm:
       valueFiles:
-        - argocd/values/dashboard-values.yaml
+        - ../../values/dashboard-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: kubernetes-dashboard
