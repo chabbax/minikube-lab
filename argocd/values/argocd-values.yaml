@@ -11,3 +11,7 @@ server:
     type: NodePort
     nodePortHttp: 30081
     nodePortHttps: 30444
+controller:
+  extraArgs:
+    - --app-resync=60         # how often (in seconds) to re-scan all Applications
+    - --app-resync-jitter=10
