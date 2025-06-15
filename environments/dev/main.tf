@@ -62,7 +62,7 @@ module "argocd" {
   source            = "../../terraform/modules/helm_release"
   name              = "argocd"
   namespace         = "argocd"
-  chart_path        = "${path.root}/../../terraform/helm/charts/argo-cd"
+  chart_path        = "${path.root}/../../argocd/charts/argo-cd"
   create_namespace  = true
   atomic            = true
   wait              = true
@@ -72,6 +72,62 @@ module "argocd" {
   set               = []
 
   values = [
-    file("${path.root}/helm-values/argocd-values.yaml")
+    file("${path.root}/../../argocd/values/argocd-values.yaml")
+  ]
+}
+
+module "service_accounts" {
+  source = "../../terraform/modules/service_accounts"
+
+  service_accounts = [
+    {
+      name      = "dashboard-view-sa"
+      namespace = "kubernetes-dashboard"
+      labels    = { "app" = "dashboard" }
+    }
+  ]
+}
+
+module "cluster_roles" {
+  source = "../../terraform/modules/cluster_roles"
+
+  cluster_roles = [
+    {
+      name = "dashboard-readonly"
+      rules = [
+        {
+          api_groups = [""]
+          resources  = ["pods", "services", "endpoints", "namespaces"]
+          verbs      = ["get", "list", "watch"]
+        },
+        {
+          api_groups = ["apps"]
+          resources  = ["deployments", "daemonsets", "replicasets", "statefulsets"]
+          verbs      = ["get", "list", "watch"]
+        }
+      ]
+    }
+  ]
+}
+
+module "cluster_role_bindings" {
+  source = "../../terraform/modules/cluster_role_bindings"
+
+  cluster_role_bindings = [
+    {
+      name = "dashboard-readonly-binding"
+      subjects = [
+        {
+          kind      = "ServiceAccount"
+          name      = "dashboard-view-sa"
+          namespace = "kubernetes-dashboard"
+        }
+      ]
+      role_ref = {
+        api_group = "rbac.authorization.k8s.io"
+        kind      = "ClusterRole"
+        name      = "dashboard-readonly"
+      }
+    }
   ]
 }
