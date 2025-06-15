@@ -88,28 +88,6 @@ module "service_accounts" {
   ]
 }
 
-module "cluster_roles" {
-  source = "../../terraform/modules/cluster_roles"
-
-  cluster_roles = [
-    {
-      name = "dashboard-readonly"
-      rules = [
-        {
-          api_groups = [""]
-          resources  = ["pods", "services", "endpoints", "namespaces"]
-          verbs      = ["get", "list", "watch"]
-        },
-        {
-          api_groups = ["apps"]
-          resources  = ["deployments", "daemonsets", "replicasets", "statefulsets"]
-          verbs      = ["get", "list", "watch"]
-        }
-      ]
-    }
-  ]
-}
-
 module "cluster_role_bindings" {
   source = "../../terraform/modules/cluster_role_bindings"
 
@@ -121,13 +99,28 @@ module "cluster_role_bindings" {
           kind      = "ServiceAccount"
           name      = "dashboard-view-sa"
           namespace = "kubernetes-dashboard"
+          api_group = ""
         }
       ]
       role_ref = {
         api_group = "rbac.authorization.k8s.io"
         kind      = "ClusterRole"
-        name      = "dashboard-readonly"
+        name      = "view"
       }
+    }
+  ]
+}
+
+module "dashboard_secrets" {
+  source = "../../terraform/modules/secrets"
+
+  secrets = [
+    {
+      service_account_name = "dashboard-view-sa"
+      namespace            = "kubernetes-dashboard"
+      secret_name          = "dashboard-view-sa-token"
+      labels               = { app = "dashboard" }
+      annotations          = { "created-by" = "terraform" }
     }
   ]
 }
