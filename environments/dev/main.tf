@@ -58,24 +58,6 @@ module "taints" {
   ]
 }
 
-module "argocd" {
-  source            = "../../terraform/modules/helm_release"
-  name              = "argocd"
-  namespace         = "argocd"
-  chart_path        = "${path.root}/../../argocd/charts/argo-cd"
-  create_namespace  = true
-  atomic            = true
-  wait              = true
-  wait_for_jobs     = true
-  dependency_update = true
-  timeout           = "300"
-  set               = []
-
-  values = [
-    file("${path.root}/../../argocd/values/argocd-values.yaml")
-  ]
-}
-
 module "service_accounts" {
   source = "../../terraform/modules/service_accounts"
 
@@ -105,7 +87,7 @@ module "cluster_role_bindings" {
       role_ref = {
         api_group = "rbac.authorization.k8s.io"
         kind      = "ClusterRole"
-        name      = "view"
+        name      = "cluster-admin"
       }
     }
   ]
@@ -122,5 +104,23 @@ module "dashboard_secrets" {
       labels               = { app = "dashboard" }
       annotations          = { "created-by" = "terraform" }
     }
+  ]
+}
+
+module "argocd" {
+  source            = "../../terraform/modules/helm_release"
+  name              = "argocd"
+  namespace         = "argocd"
+  chart_path        = "${path.root}/../../argocd/charts/argo-cd"
+  create_namespace  = true
+  atomic            = true
+  wait              = true
+  wait_for_jobs     = true
+  dependency_update = true
+  timeout           = "300"
+  set               = []
+
+  values = [
+    file("${path.root}/../../argocd/values/argocd-values.yaml")
   ]
 }
