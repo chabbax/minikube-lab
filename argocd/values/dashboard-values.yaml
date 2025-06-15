@@ -1,21 +1,23 @@
-# Private chart in directory : argocd/charts/dashboard
-web:
-  automountServiceAccountToken: true
-service:
-  type: NodePort
-  nodePort: 30001
-ingress:
-  enabled: false
-metrics:
-  enabled: true
 app:
   scheduling:
     nodeSelector:
       kubernetes.io/hostname: minikube-m02
   tolerations:
-    - key: "apps"
+    - key:    "apps"
       operator: "Equal"
-      value: "nginx"
-      effect: "NoSchedule"
+      value:   "nginx"
+      effect:  "NoSchedule"
+web:
+  service:
+    type: NodePort
+    extraSpec:
+      ports:
+        - port:       80
+          targetPort: 8000
+          nodePort:   30001
+  args:
+    - --enable-insecure-login
+metricsScraper:
+  enabled: true
 kong:
   enabled: false
